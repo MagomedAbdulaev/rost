@@ -1,0 +1,66 @@
+{% load static %}
+
+<header class="bg-white dark:bg-[#1e1e20] shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="{% url 'rost:home' %}" class="flex items-center space-x-2">
+            <svg width="28px" viewBox="0 0 22 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.51541 34.3333C2.53596 34.3427 2.55651 34.35 2.5789 34.3594C2.59578 34.3651 2.62018 34.3726 2.64623 34.3781C2.88934 34.4548 3.14731 34.4977 3.41665 34.4998H15.4151C16.0004 34.4998 16.294 33.7928 15.8808 33.3778L8.09109 25.5676L8.08742 25.5714C6.44016 27.2093 5.35196 28.29 4.5498 29.0903C3.83736 29.8009 3.35115 30.2888 2.8987 30.7469C2.33029 31.3135 1.95251 31.6913 1.95067 31.6931C1.67399 31.9867 1.50391 32.4111 1.50391 32.8468C1.50391 33.5312 1.92278 34.0884 2.51725 34.3333H2.51541Z" fill="#FF4F12"></path><path d="M1.50158 32.847C1.50158 32.4112 1.67166 31.9868 1.94853 31.6933C1.94853 31.6933 2.32796 31.3137 2.89637 30.7471C3.34699 30.2891 3.8332 29.8011 4.54748 29.0905C5.34964 28.2901 6.43784 27.2095 8.08509 25.5716C8.08894 25.5697 8.08894 25.5677 8.08894 25.5677C8.57314 25.0854 9.10614 24.5562 9.6951 23.9727C9.70629 23.9616 9.71565 23.9522 9.72684 23.941C12.2529 21.4299 15.7926 17.909 20.8896 12.8306C21.3664 12.3539 21.3701 11.5798 20.8934 11.103L10.3907 0.590839C9.9138 0.114166 9.14155 0.114166 8.66488 0.590839L2.60281 6.66025C0.533005 8.73023 0.813541 10.0839 0.813541 12.8643V31.8859C0.813541 33.0097 1.52213 33.9632 2.51492 34.3335C1.92046 34.0886 1.50158 33.5313 1.50158 32.847Z" fill="#ffffff"></path>
+            </svg>
+            <span class="text-lg font-semibold text-primary dark:text-white">Ростелеком CRM</span>
+        </a>
+
+        <div class="flex items-center space-x-4">
+            <button id="theme-toggle" type="button"
+                class="text-gray-600 dark:text-gray-300 hover:text-primary transition duration-200 flex items-center space-x-2 p-2 rounded">
+                <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                    <path id="theme-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+                <span id="theme-label" class="text-sm">Тема</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<script>
+    // Обёртка — чтобы ждать готовности DOM
+    document.addEventListener('DOMContentLoaded', function () {
+        const html = document.querySelector('.wrapper');
+        const toggleBtn = document.getElementById('theme-toggle');
+        const themeIconPath = document.getElementById('theme-path');
+
+        const storedTheme = localStorage.getItem('theme');
+
+        if (storedTheme === 'dark') {
+            html.classList.add('dark');
+            setMoonIcon(false);
+        } else {
+            html.classList.remove('dark');
+            setSunIcon(false);
+        }
+
+        // При клике — переключаем тему
+        toggleBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            // Обновляем иконку
+            if (isDark) {
+                setMoonIcon(true);
+            } else {
+                setSunIcon(true);
+            }
+        });
+
+        // Функции для смены иконки (легко читаемые пути SVG)
+        function setSunIcon(animate) {
+            themeIconPath.setAttribute('d', 'M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364l-1.414-1.414M7.05 7.05L5.636 5.636m12.728 0L17.95 7.05M7.05 16.95l-1.414 1.414');
+        }
+
+        function setMoonIcon(animate) {
+            themeIconPath.setAttribute('d', 'M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z');
+        }
+    });
+</script>
